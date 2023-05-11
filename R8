@@ -1,0 +1,260 @@
+R8.1 - Definiti clasa cultura de orez care are ca atribute suprafata pe care se cultiva, tipul de orez cultivat și pret productie/hectar.Drefiniti constructori/destructori și metoda de afisare
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class CulturaOrez {
+  private:
+    float suprafataCultivata;
+    string tipOrez;
+    float pretProductieHectar;
+
+  public:
+    CulturaOrez(float suprafata, string tip1, float pret) {
+      suprafataCultivata = suprafata;
+      tipOrez = tip1;
+      pretProductieHectar = pret;
+    }
+
+    ~CulturaOrez() {}
+
+    void afisare() {
+      cout << "Cultura: " << tipOrez << "; pret/h=" << pretProductieHectar << " RON; suprafata cultivata=" << suprafataCultivata << " h" << endl;
+    }
+};
+
+int main() {
+  float suprafata;
+  string tip1,tip2,tip3;
+  float pret;
+
+  cout << "Introduceti tipul de orez: ";
+  getline(cin, tip1);
+
+  cout << "Introduceti suprafata cultivata: ";
+  getline(cin, tip2);
+  suprafata = stof(tip2);
+
+  cout << "Introduceti pretul de productie pe hectar: ";
+  getline(cin, tip3);
+  pret = stof(tip3);
+
+
+  CulturaOrez cultura(suprafata, tip1, pret);
+  cultura.afisare();
+
+  return 0;
+}
+
+
+
+==========================================================================
+
+
+
+R8.2 - Supraincarcati operatorul -= care reduce numarul de hectare cultivate cu o valoare x
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class CulturaOrez {
+  private:
+    float suprafataCultivata;
+    string tipOrez;
+    float pretProductieHectar;
+
+  public:
+    CulturaOrez(float suprafata, string tip1, float pret) {
+      suprafataCultivata = suprafata;
+      tipOrez = tip1;
+      pretProductieHectar = pret;
+    }
+
+    ~CulturaOrez() {}
+
+    void afisare() {
+      cout << "Cultura: " << tipOrez << "; pret/h=" << pretProductieHectar << " RON; suprafata cultivata=" << suprafataCultivata << " h" << endl;
+    }
+
+    void operator-=(float x) {
+      suprafataCultivata -= x;
+    }
+};
+
+int main() {
+  float suprafata;
+  string tip1,tip2,tip3;
+  float pret;
+
+  cout << "Introduceti tipul de orez: ";
+  getline(cin, tip1);
+
+  cout << "Introduceti suprafata cultivata: ";
+  getline(cin, tip2);
+  suprafata = stof(tip2);
+
+  cout << "Introduceti pretul de productie pe hectar: ";
+  getline(cin, tip3);
+  pret = stof(tip3);
+
+  CulturaOrez cultura(suprafata, tip1, pret);
+  cultura.afisare();
+
+  float x;
+  cout << "Introduceti valoarea pentru a reduce suprafata cultivata: ";
+  cin >> x;
+
+  cultura -= x;
+  cultura.afisare();
+
+  return 0;
+}
+
+
+
+
+========================================================================
+
+
+
+R8.3-Definiti o functie statică care permire calcularea costului de productie a unei culturi de orez. Functia va intoarce valoarea iar dupa apel se va afisa mesajul "Costul de productie total este ..."
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class CulturaOrez {
+  private:
+    float suprafataCultivata;
+    string tipOrez;
+    float pretProductieHectar;
+
+  public:
+    CulturaOrez(float suprafata, string tip1, float pret) {
+      suprafataCultivata = suprafata;
+      tipOrez = tip1;
+      pretProductieHectar = pret;
+    }
+
+    ~CulturaOrez() {}
+
+    static float calculeazaCostulProductiei(float suprafata, float pret) {
+      return suprafata * pret;
+    }
+
+    void afisare() {
+      cout << "Cultura: " << tipOrez << "; pret/h=" << pretProductieHectar << " RON; suprafata cultivata=" << suprafataCultivata << " h" << endl;
+    }
+};
+
+int main() {
+  float suprafata;
+  string tip1,tip2,tip3;
+  float pret;
+
+  cout << "Introduceti tipul de orez: ";
+  getline(cin, tip1);
+
+  cout << "Introduceti suprafata cultivata: ";
+  getline(cin, tip2);
+  suprafata = stof(tip2);
+
+  cout << "Introduceti pretul de productie pe hectar: ";
+  getline(cin, tip3);
+  pret = stof(tip3);
+
+  CulturaOrez cultura(suprafata, tip1, pret);
+  cultura.afisare();
+
+  float costTotal = CulturaOrez::calculeazaCostulProductiei(suprafata, pret);
+  cout << "Costul de productie total este " << costTotal << " RON." << endl;
+
+  return 0;
+}
+
+
+
+=================================================================
+
+
+
+
+
+R8.4-Citiți un șir de culturi de orez si identificati cel mai frecvent soi de orez cultivat
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+class CulturaOrez {
+  private:
+    float suprafataCultivata;
+    string tipOrez;
+    float pretProductieHectar;
+
+  public:
+    CulturaOrez(float suprafata, string tip1, float pret) {
+      suprafataCultivata = suprafata;
+      tipOrez = tip1;
+      pretProductieHectar = pret;
+    }
+
+    ~CulturaOrez() {}
+
+    string getTipOrez() const {
+      return tipOrez;
+    }
+};
+
+int main() {
+  int numarCulturi;
+  vector<CulturaOrez> culturi;
+  string tip, suprafataStr, pretStr;
+  float suprafata, pret;
+
+  cout << "Introduceti numarul de culturi de orez: ";
+  cin >> numarCulturi;
+  cin.ignore(); // ignoram caracterul newline ramas in buffer dupa citirea numarului
+
+  for (int i = 0; i < numarCulturi; i++) {
+    cout << "Introduceti tipul de orez pentru cultura " << i + 1 << ": ";
+    getline(cin, tip);
+
+    cout << "Introduceti suprafata cultivata: ";
+    getline(cin, suprafataStr);
+    suprafata = stof(suprafataStr);
+
+    cout << "Introduceti pretul de productie pe hectar: ";
+    getline(cin, pretStr);
+    pret = stof(pretStr);
+
+    culturi.emplace_back(suprafata, tip, pret);
+  }
+
+  // numaram cate culturi sunt pentru fiecare tip de orez
+  unordered_map<string, int> numarCulturiTip;
+  for (const CulturaOrez& cultura : culturi) {
+    numarCulturiTip[cultura.getTipOrez()]++;
+  }
+
+  // gasim tipul de orez cu numarul maxim de culturi
+  string celMaiFrecventTipOrez;
+  int numarMaximCulturi = 0;
+  for (const auto& pair : numarCulturiTip) {
+    if (pair.second > numarMaximCulturi) {
+      celMaiFrecventTipOrez = pair.first;
+      numarMaximCulturi = pair.second;
+    }
+  }
+
+  // afisam rezultatul
+  cout << "Cel mai frecvent tip de orez cultivat este: " << celMaiFrecventTipOrez << endl;
+
+  return 0;
+}
