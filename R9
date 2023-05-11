@@ -1,0 +1,211 @@
+R9.1-Definiti clasa MotorElectric care este caracterizat de firma producatoare, pret și tip curent (monofazat, trifazat).Definiti constructori/destructori si metoda de afisare.
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class MotorElectric {
+private:
+    string firma_producatoare;
+    int pret;
+    string tip_curent;
+public:
+    MotorElectric(string firma, int pret, string tip) : firma_producatoare(firma), pret(pret), tip_curent(tip) {}
+    ~MotorElectric() {}
+
+    void afisare() {
+        cout << "Motor electric " << firma_producatoare << " pret " << pret << " tip " << tip_curent << endl;
+    }
+};
+
+int main() {
+    string firma;
+    int pret;
+    string tip;
+
+    cin >> firma >> pret >> tip;
+
+    MotorElectric me(firma, pret, tip);
+    me.afisare();
+
+    return 0;
+}
+
+
+
+
+==============================================================
+
+
+
+
+R9.2-Supraincarcati operatorul != care intoarece true daca pretul si tipul de curent sunt diferite.
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class MotorElectric {
+private:
+string firma_producatoare;
+int pret;
+string tip_curent;
+public:
+MotorElectric(string firma, int pret, string tip) : firma_producatoare(firma), pret(pret), tip_curent(tip) {}
+~MotorElectric() {}
+void afisare() {
+    cout << "Motor electric " << firma_producatoare << " pret " << pret << " tip " << tip_curent << endl;
+}
+
+bool operator!=(const MotorElectric& other) const {
+    return (this->pret != other.pret || this->tip_curent != other.tip_curent);
+}
+};
+
+int main() {
+string firma;
+int pret;
+string tip;
+cin >> firma >> pret >> tip;
+
+MotorElectric me(firma, pret, tip);
+me.afisare();
+
+cin >> firma >> pret >> tip;
+
+MotorElectric me2(firma, pret, tip);
+me2.afisare();
+
+if (me != me2) {
+    cout << "true" << endl;
+}
+else {
+    cout << "false" << endl;
+}
+
+return 0;
+}
+
+
+
+
+==================================================
+
+
+
+
+R9.3-Supraincarcati operatorul -- care scade pretul unui motor cu 1%.
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class MotorElectric {
+private:
+    string firma_producatoare;
+    float pret;
+    string tip_curent;
+public:
+    MotorElectric(string firma, float pret, string tip) : firma_producatoare(firma), pret(pret), tip_curent(tip) {}
+    ~MotorElectric() {}
+
+    void afisare() {
+        cout << "Motor electric " << firma_producatoare << " pret " << pret << " tip " << tip_curent << endl;
+    }
+
+    void operator--() {
+        pret = pret - (0.01 * pret);
+    }
+};
+
+int main() {
+    string firma;
+    float pret;
+    string tip;
+
+    cin >> firma >> pret >> tip;
+
+    MotorElectric me(firma, pret, tip);
+    me.afisare();
+
+    --me; // scade pretul cu 1%
+    me.afisare();
+
+    return 0;
+}
+
+
+
+
+==============================================================
+
+
+
+
+
+
+R9-4-Cititi un șir de motoare și afisati motoarele produse de un producator citit de tastatura.
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+class MotorElectric {
+private:
+    string firma_producatoare;
+    int pret;
+    string tip_curent;
+public:
+    MotorElectric(string firma, int pret, string tip) : firma_producatoare(firma), pret(pret), tip_curent(tip) {}
+    ~MotorElectric() {}
+
+    void afisare() const {
+        cout << "Motor electric " << firma_producatoare << " pret " << pret << " tip " << tip_curent << endl;
+    }
+
+    string getFirma() const {
+        string lowercase_firma = firma_producatoare;
+        transform(lowercase_firma.begin(), lowercase_firma.end(), lowercase_firma.begin(), [](unsigned char c){ return tolower(c); });
+        return lowercase_firma;
+    }
+};
+
+int main() {
+    vector<MotorElectric> motoare;
+
+    int n;
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        string firma;
+        int pret;
+        string tip;
+
+        cin >> firma >> pret >> tip;
+
+        // Convertim numele firmei la litere mici
+        transform(firma.begin(), firma.end(), firma.begin(), [](unsigned char c){ return tolower(c); });
+
+        motoare.emplace_back(firma, pret, tip);
+    }
+
+    string producator;
+    cin >> producator;
+
+    // Convertim producatorul citit la litere mici
+    transform(producator.begin(), producator.end(), producator.begin(), [](unsigned char c){ return tolower(c); });
+
+    for (const auto& motor : motoare) {
+        // Verificăm dacă numele firmei motorului curent este egal cu producătorul citit (case-insensitive)
+        if (motor.getFirma() == producator) {
+            motor.afisare();
+        }
+    }
+
+    return 0;
+}
