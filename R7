@@ -1,1 +1,329 @@
+R7.1-Creati clasa Joc care care ca atribute un nume, anul apariției și o listă cu primele 10 punctaje. Adaugati clasei constructori, destructori si o metodă de afisare
+#include <iostream>
+#include <string>
+#include <vector>
 
+using namespace std;
+
+class Joc {
+    private:
+        string nume;
+        int an_aparitie;
+        vector<int> punctaje;
+    
+    public:
+        Joc(string nume, int an_aparitie, vector<int> punctaje) {
+            this->nume = nume;
+            this->an_aparitie = an_aparitie;
+            this->punctaje = punctaje;
+        }
+        
+        ~Joc() {
+            // Destructor
+        }
+        
+        void afisare() {
+            cout << nume << " an=" << an_aparitie << " [";
+            for (int i = 0; i < 10; i++) {
+                if (i < punctaje.size()) {
+                    cout << punctaje[i];
+                } else {
+                    cout << "0";
+                }
+                if (i != 9) {
+                    cout << ", ";
+                }
+            }
+            cout << "]" << endl;
+        }
+};
+
+int main() {
+    string nume;
+    int an_aparitie;
+    vector<int> punctaje;
+    int punctaj;
+    int k;
+    
+    
+    // Read input
+    cout << "Introduceti numele jocului: ";
+    getline(cin, nume);
+    cout << "Introduceti anul aparitiei: ";
+    cin >> an_aparitie;
+    cin >> k;
+    
+    cout << "Introduceti punctajele (maxim 10): ";
+    for (int i = 0; i < k; i++) {
+        if (cin >> punctaj) {
+            punctaje.push_back(punctaj);
+        } else {
+            break;
+        }
+    }
+    
+    // Create game object
+    Joc joc(nume, an_aparitie, punctaje);
+    
+    // Print output
+    joc.afisare();
+    
+    return 0;
+}
+
+
+
+------------------------------------------------------------------------------------
+
+
+
+R7.2-Supraincărcați operatorul de indexare [] astfel incat sa permita modificarea punctajului de pe indexul x, si arunca o exceptie daca indexul e mai mare decat 10. Exceptia este "out of index"
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Joc {
+    private:
+        string nume;
+        int an_aparitie;
+        vector<int> punctaje;
+    
+    public:
+        Joc(string nume, int an_aparitie, vector<int> punctaje) {
+            this->nume = nume;
+            this->an_aparitie = an_aparitie;
+            this->punctaje = punctaje;
+        }
+        
+        ~Joc() {
+            // Destructor
+        }
+        
+        void afisare() {
+            cout << nume << " an=" << an_aparitie << " [";
+            for (int i = 0; i < 10; i++) {
+                if (i < punctaje.size()) {
+                    cout << punctaje[i];
+                } else {
+                    cout << "0";
+                }
+                if (i != 9) {
+                    cout << ", ";
+                }
+            }
+            cout << "]" << endl;
+        }
+
+        int& operator[](int index) {
+            if (index < 0 || index >= 10) {
+                throw out_of_range("out of index");
+            }
+            return punctaje[index];
+        }
+};
+int main() {
+    string nume;
+    int an_aparitie;
+    vector<int> punctaje;
+    int punctaj;
+    int k;
+    // Read input
+    cout << "Introduceti numele jocului: ";
+    getline(cin, nume);
+    cout << "Introduceti anul aparitiei: ";
+    cin >> an_aparitie;
+    cin >> k;
+    
+    cout << "Introduceti punctajele (maxim 10): ";
+    for (int i = 0; i < k; i++) {
+        if (cin >> punctaj) {
+            punctaje.push_back(punctaj);
+        } else {
+            break;
+        }
+    }
+    // Create game object
+    Joc joc(nume, an_aparitie, punctaje);
+    // Modify score at index 2
+    joc[2]=50;
+    
+    // Print output
+    joc.afisare();
+    
+    return 0;
+}
+
+
+
+-------------------------------------------------------------
+
+
+
+
+R7.3 Adăugați o functie statică în clasa Joc care validează dacă clasamentul este corect (numerele sunt pozitive in ordine descrescătoare). Testati functia, daca clasamentul este corect se afiseaza corect altfel incorect
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Joc {
+private:
+    string nume_joc;
+    int an_lansare;
+    vector<int> clasament;
+
+public:
+    static bool validare_clasament(const vector<int>& clasament) {
+        for (int i = 0; i < clasament.size() - 1; i++) {
+            if (clasament[i] <= 0 || clasament[i] < clasament[i + 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void set_nume_joc(const string& nume) {
+        nume_joc = nume;
+    }
+
+    void set_an_lansare(int an) {
+        an_lansare = an;
+    }
+
+    void set_clasament(const vector<int>& cls) {
+        clasament = cls;
+    }
+
+    void afisare_rezultat() const {
+        if (validare_clasament(clasament)) {
+            cout << "corect";
+        } else {
+            cout << "incorect";
+        }
+    }
+};
+
+int main() {
+    Joc joc;
+    string nume;
+    int an, n, scor;
+
+    cin >> nume >> an >> n;
+    joc.set_nume_joc(nume);
+    joc.set_an_lansare(an);
+
+    vector<int> clasament(n);
+    for (int i = 0; i < n; i++) {
+        cin >> scor;
+        clasament[i] = scor;
+    }
+    joc.set_clasament(clasament);
+
+    joc.afisare_rezultat();
+
+    return 0;
+}
+
+
+
+----------------------------------------------------------------
+
+
+
+R7-4 Creați un tablou de jocuri și afisati anii distinctii in care s-au creat jocuri.
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_set>
+
+using namespace std;
+
+class Joc {
+    private:
+        string nume;
+        int an_aparitie;
+        vector<int> punctaje;
+    
+    public:
+        Joc(string nume, int an_aparitie, vector<int> punctaje) {
+            this->nume = nume;
+            this->an_aparitie = an_aparitie;
+            this->punctaje = punctaje;
+        }
+        
+        ~Joc() {
+            // Destructor
+        }
+        
+        void afisare() const {
+            cout << nume << " an=" << an_aparitie << " [";
+            for (int i = 0; i < 10; i++) {
+                if (i < punctaje.size()) {
+                    cout << punctaje[i];
+                } else {
+                    cout << "0";
+                }
+                if (i != 9) {
+                    cout << ", ";
+                }
+            }
+            cout << "]" << endl;
+        }
+        
+        int getAnAparitie() const {
+            return an_aparitie;
+        }
+};
+int main() {
+    int num_jocuri;
+    cout << "Introduceti numarul de jocuri: ";
+    cin >> num_jocuri;
+    
+    vector<Joc> jocuri;
+    string nume;
+    int an_aparitie;
+    vector<int> punctaje;
+    int punctaj;
+    int k;
+    
+    for (int i = 0; i < num_jocuri; i++) {
+        // Read input for each game
+        cout << "Introduceti numele jocului: ";
+        cin.ignore();
+        getline(cin, nume);
+        cout << "Introduceti anul aparitiei: ";
+        cin >> an_aparitie;
+        cin >> k;
+        
+        cout << "Introduceti punctajele (maxim 10): ";
+        punctaje.clear();
+        for (int j = 0; j < k; j++) {
+            if (cin >> punctaj) {
+                punctaje.push_back(punctaj);
+            } else {
+                break;
+            }
+        }
+        
+        // Create game object and add it to the vector
+        Joc joc(nume, an_aparitie, punctaje);
+        jocuri.push_back(joc);
+    }
+    
+    // Print output
+    unordered_set<int> ani_aparitie_distincti;
+    for (const Joc& joc : jocuri) {
+        joc.afisare();
+        ani_aparitie_distincti.insert(joc.getAnAparitie());
+    }
+    cout << "Anii distincti in care s-au creat jocuri: ";
+    for (const int& an : ani_aparitie_distincti) {
+        cout << an << " ";
+    }
+    cout << endl;
+    
+    return 0;
+}
