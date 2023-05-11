@@ -1,0 +1,276 @@
+R10.1-Creati clasa promotie care ca atribute un nume, durata (numarul de zile), ziua, luna si anul in care a incepu si suma castigata.Definiti constructori/destructori și metoda de afisare.
+#include <iostream>
+using namespace std;
+
+class Promotie {
+private:
+    string nume;
+    int durata;
+    int ziua;
+    int luna;
+    int an;
+    int sumaCastigata;
+
+public:
+    // constructor
+    Promotie(string nume, int durata, int ziua, int luna, int an, int sumaCastigata) {
+        this->nume = nume;
+        this->durata = durata;
+        this->ziua = ziua;
+        this->luna = luna;
+        this->an = an;
+        this->sumaCastigata = sumaCastigata;
+    }
+
+    // destructor
+    ~Promotie() {}
+
+    // metoda de afisare
+    void afisare() {
+        cout << nume << " a inceput in " << ziua << "/" << luna << "/" << an
+             << " si a durat " << durata << " zile, castig=" << sumaCastigata << endl;
+    }
+};
+
+int main() {
+    string nume;
+    int durata, ziua, luna, an, sumaCastigata;
+
+    // citire date
+    getline(cin, nume);
+    cin >> durata >> ziua >> luna >> an >> sumaCastigata;
+
+    // creare obiect Promotie
+    Promotie p(nume, durata, ziua, luna, an, sumaCastigata);
+
+    // afisare date
+    p.afisare();
+
+    return 0;
+}
+
+
+
+
+===========================================================
+
+
+
+
+R10-2Supraincarcati operatorul de incrementare pentru a permite cresterea numarului de zile de reducere..
+#include <iostream>
+using namespace std;
+
+class Promotie {
+private:
+    string nume;
+    int durata;
+    int ziua;
+    int luna;
+    int an;
+    int sumaCastigata;
+
+public:
+    // constructor
+    Promotie(string nume, int durata, int ziua, int luna, int an, int sumaCastigata) {
+        this->nume = nume;
+        this->durata = durata;
+        this->ziua = ziua;
+        this->luna = luna;
+        this->an = an;
+        this->sumaCastigata = sumaCastigata;
+    }
+
+    // destructor
+    ~Promotie() {}
+
+    // metoda de afisare
+    void afisare() {
+        cout << nume << " a inceput in " << ziua << "/" << luna << "/" << an
+             << " si a durat " << durata << " zile, castig=" << sumaCastigata << endl;
+    }
+
+    // supraincarcare operator ++
+    Promotie operator++() {
+        durata++;
+        return *this;
+    }
+};
+
+int main() {
+    string nume;
+    int durata, ziua, luna, an, sumaCastigata;
+
+    // citire date
+    getline(cin, nume);
+    cin >> durata >> ziua >> luna >> an >> sumaCastigata;
+
+    // creare obiect Promotie
+    Promotie p(nume, durata, ziua, luna, an, sumaCastigata);
+
+    // afisare date
+    p.afisare();
+
+    // incrementare durata
+    ++p;
+
+    // afisare date actualizate
+    cout << "Dupa incrementare:\n";
+    p.afisare();
+
+    return 0;
+}
+
+
+
+================================================================
+
+
+
+R10-3Adaugati o metoda prietenă clasei promotie care permite modificarea datei de inceput.
+#include <iostream>
+using namespace std;
+
+class Promotie {
+private:
+string nume;
+int durata;
+int ziua;
+int luna;
+int an;
+int sumaCastigata;
+
+public:
+// constructor
+Promotie(string nume, int durata, int ziua, int luna, int an, int sumaCastigata) {
+this->nume = nume;
+this->durata = durata;
+this->ziua = ziua;
+this->luna = luna;
+this->an = an;
+this->sumaCastigata = sumaCastigata;
+}
+// destructor
+~Promotie() {}
+
+// metoda de afisare
+void afisare() {
+    cout << nume << " a inceput in " << ziua << "/" << luna << "/" << an
+         << " si a durat " << durata << " zile, castig=" << sumaCastigata << endl;
+}
+
+// metoda prietena pentru modificarea datei de inceput
+friend void modificaDataInceput(Promotie &p, int ziua, int luna, int an) {
+    p.ziua = ziua;
+    p.luna = luna;
+    p.an = an;
+}
+};
+
+int main() {
+string nume;
+int durata, ziua, luna, an, sumaCastigata;
+// citire date
+getline(cin, nume);
+cin >> durata >> ziua >> luna >> an >> sumaCastigata;
+
+// creare obiect Promotie
+Promotie p(nume, durata, ziua, luna, an, sumaCastigata);
+
+// modificare data de inceput
+int ziuaNoua, lunaNoua, anNou;
+cin >> ziuaNoua >> lunaNoua >> anNou;
+modificaDataInceput(p, ziuaNoua, lunaNoua, anNou);
+
+// afisare date
+p.afisare();
+
+return 0;
+}
+
+
+
+
+================================================================
+
+
+
+
+R10-UTLTIMU BA ! -4Cititi un sir de  promotii si afisati promotia/promotiile cu castig minim.
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Promotie {
+private:
+    string nume;
+    int durata;
+    int ziua;
+    int luna;
+    int an;
+    int sumaCastigata;
+
+public:
+    // constructor
+    Promotie(string nume, int durata, int ziua, int luna, int an, int sumaCastigata) {
+        this->nume = nume;
+        this->durata = durata;
+        this->ziua = ziua;
+        this->luna = luna;
+        this->an = an;
+        this->sumaCastigata = sumaCastigata;
+    }
+
+    // destructor
+    ~Promotie() {}
+
+    // metoda de afisare
+    void afisare() {
+        cout << nume << " a inceput in " << ziua << "/" << luna << "/" << an
+             << " si a durat " << durata << " zile, castig=" << sumaCastigata << endl;
+    }
+
+    // getter pentru sumaCastigata
+    int getSumaCastigata() {
+        return sumaCastigata;
+    }
+};
+
+int main() {
+    int n;
+    cin >> n;
+    cin.ignore(); // ignora caracterul newline ramas in buffer
+
+    // citire promotii
+    vector<Promotie> promotii;
+    for (int i = 0; i < n; i++) {
+        string nume;
+        int durata, ziua, luna, an, sumaCastigata;
+
+        getline(cin, nume);
+        cin >> durata >> ziua >> luna >> an >> sumaCastigata;
+        cin.ignore(); // ignora caracterul newline ramas in buffer
+
+        Promotie p(nume, durata, ziua, luna, an, sumaCastigata);
+        promotii.push_back(p);
+    }
+
+    // determina promotia/promotiile cu castig minim
+    int castigMinim = promotii[0].getSumaCastigata();
+    for (int i = 1; i < n; i++) {
+        if (promotii[i].getSumaCastigata() < castigMinim) {
+            castigMinim = promotii[i].getSumaCastigata();
+        }
+    }
+
+    // afisare promotii cu castig minim
+    for (int i = 0; i < n; i++) {
+        if (promotii[i].getSumaCastigata() == castigMinim) {
+            promotii[i].afisare();
+        }
+    }
+
+    return 0;
+}
